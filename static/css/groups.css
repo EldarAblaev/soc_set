@@ -1,0 +1,18 @@
+#users_block{
+    margin: 10px 0 20px;
+}
+.user{
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+    border: 1px solid #d4d4d4;
+    border-radius: 5px;
+    padding: 10px;
+}
+.user img{
+    margin-bottom: 5px;
+    display: block;
+}
+.user a{
+    text-decoration: none;
+}

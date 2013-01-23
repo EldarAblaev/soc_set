@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block right_column %}
+
+    <ul>
+    {% for group_user in group_users %}
+        <li><a href="{% url other_profile group_user.id %}">{{ group_user.get_profile.first_name }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}

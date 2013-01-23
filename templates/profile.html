@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{##}
+{#{% block auth %}#}
+{#    <div class="brand" style="float:right" xmlns="http://www.w3.org/1999/html">#}
+{#        <a href="{% url profile %}">{{ user.get_profile.first_name }} {{ user.get_profile.last_name }}</a>/<a href="{% url logout %}">Logout</a>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+{% block left_column %}
+{#    <img src="{{ MEDIA_URL }}{{ user_cur.get_profile.avatar }}" width="200"/>#}
+{#    <br/>#}
+{#    {% ifequal user_cur.id user.id %}#}
+{#        <ul>#}
+{#            <li><a href="{% url edit_profile %}">Edit</a></li>#}
+{#            <li><a href="{% url friends %}">My friends {% if claims %} ({{ claims }}) {% endif %}</a></li>#}
+{#            <li><a href="{% url allMessages %}">My messages {% if count_messages %} ({{ count_messages }}) {% endif %}</a></li>#}
+{#        </ul>#}
+{#    {% else %}#}
+{#        <ul>#}
+{#            <li>#}
+{#                {% if is_friend %}#}
+{#                    {% if is_friend.status == 'active' %}#}
+{#                        Is Friend#}
+{#                    {% else %}#}
+{#                        You send request#}
+{#                    {% endif %}#}
+{#                {% else %}#}
+{#                    <a href="javascript:void(0)" onclick="addToFriends({{ user_cur.id }})" id="addFriend">Add to friends</a>#}
+{#                {% endif %}#}
+{#            </li>#}
+{#            <li><a href="{% url newMessage user_cur.id %}">Написать сообщение</a></li>#}
+{#            <li><a href="{% url friends %}{{ id }}">Friends</a></li>#}
+{#        </ul>#}
+{#    {% endifequal %}#}
+{##}
+
+    <script type="text/javascript">
+
+        function addToFriends(friendId) {
+//*
+            $.get("/addfriend/", {
+                    id: friendId
+                },
+
+                function() {
+                    alert('add');
+                    $('#addFriend').removeAttr('onclick');
+                    $('#addFriend').text('You send request');
+                }
+            );
+//*/
+            /*
+            $.post("/addfriend", {
+                    name: "Berg",
+                    food: "Code"
+                },
+                function(data) {
+                    alert(data);
+                }
+            );
+            */
+            /*
+            $.ajax({
+                type: "GET",
+                url: "/profile",
+                success: function() {
+                    alert('good');
+                }
+            });
+            //*/
+        }
+    </script>
+{% endblock %}
+
+{% block right_column %}
+    {{ user_cur.get_profile.first_name }} {{ user_cur.get_profile.last_name }}
+{% endblock %}

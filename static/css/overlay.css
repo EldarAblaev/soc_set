@@ -1,0 +1,18 @@
+#message_window{
+    padding: 7px;
+    border-radius: 5px;
+}
+.overlay_inner{
+    background: #fff;
+}
+.close_button{
+    background: url('../img/close_button.png');
+    width: 21px;
+    height: 21px;
+    display: inline-block;
+}
+.close_button_wrap{
+    position: absolute;
+    top: -6px;
+    right: -6px;
+}

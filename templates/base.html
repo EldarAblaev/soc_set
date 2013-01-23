@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/jqModal.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
+{#    <link href="{{ STATIC_URL }}css/modal.css" rel="stylesheet">#}
+
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le javascript
+================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-transition.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-scrollspy.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-tooltip.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-popover.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-button.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-carousel.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-typeahead.js"></script>
+{#    <script src="{{ STATIC_URL }}js/jqModal.js"></script>#}
+</head>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="{% url users %}">Все пользователи</a></li>
+                    <li><a href="{% url allGroups %}">Группы</a></li>
+                </ul>
+
+                {% if user.is_anonymous %}
+                    <form class="navbar-form pull-right" method="POST" action="{% url login %}">{% csrf_token %}
+                        <input class="span2" type="text" placeholder="Email" name="username">
+                        <input class="span2" type="password" placeholder="Password" name="password">
+                        <button type="submit" class="btn">Sign in</button>
+                    </form>
+                    <a href="register">Register</a>
+                {% else %}
+                    <div class="brand" style="float:right" xmlns="http://www.w3.org/1999/html">
+                        <a href="{% url profile %}">{{ user.get_profile.first_name }} {{ user.get_profile.last_name }} </a>/ <a href="{% url logout %}">Logout</a>
+                    </div>
+                {% endif %}
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <div class="hero-unit">
+        {% block top_block %}
+        {% endblock %}
+    </div>
+
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="span4">
+
+            {% if not user.is_anonymous %}
+
+                <img src="{{ MEDIA_URL }}{{ user_cur.get_profile.avatar }}" width="200"/>
+                <br/>
+                {% ifequal user_cur.id user.id %}
+                    <ul>
+                        <li><a href="{% url edit_profile %}">Edit</a></li>
+                        <li><a href="{% url friends %}">My friends {% load friend_count_tag %} {% friend_count_confirm user_cur %}</a></li>
+                        <li><a href="{% url allMessages %}">My messages {% load mess_count_tag %}{% mess_new_count user_cur %}</a></li>
+                    </ul>
+
+                {% else %}
+                    <ul>
+                        <li><a href="{% url other_profile user_cur.id %}">{{ user_cur.get_profile.first_name }} {{ user_cur.get_profile.last_name }}</a> </li>
+                        <li>
+                            {% if is_friend %}
+                                {% if is_friend.status == 'active' %}
+                                    Is Friend
+                                {% else %}
+                                    You send request
+                                {% endif %}
+                            {% else %}
+                                <a href="#" onclick="addToFriends({{ user_cur.id }}); return false" id="addFriend">Add to friends</a>
+                            {% endif %}
+                        </li>
+                        <li><a href="{% url newMessage user_cur.id %}" class="write_message">Написать сообщение</a></li>
+                        <li><a href="{% url friends_of_friend user_cur.id %}">Friends</a></li>
+                    </ul>
+
+                    <div class="jqmWindow" id="message_window"></div>
+
+                    <script src="{{ STATIC_URL }}js/jqModal.js"></script>
+                    <script type="text/javascript">
+
+                        $('#message_window').jqm({ajax: '@href', trigger: 'a.write_message'});
+
+                    </script>
+                {% endifequal %}
+
+            {% endif %}
+
+            {% block left_column %}
+            {% endblock %}
+
+        </div>
+
+        <div style="margin-left: 420px;">
+
+            {% block right_column %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <hr>
+
+    <footer style="text-align: center;">
+        <p>&copy; Eldar Corporation 2012</p>
+    </footer>
+
+</div> <!-- /container -->
+
+</body>
+</html>

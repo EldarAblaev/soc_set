@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block right_column %}
+    {{ message.text }}
+    <br/>
+    <form action="{% url newMessage user_id %}" method="post">{% csrf_token %}
+        <input type="text" name="message_text"/>
+        <br/>
+        <input type="submit" value="Send">
+    </form>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block right_column %}
+    <div id="friends">
+        Friends of {{ user_cur.get_profile.first_name }} {{ user_cur.get_profile.last_name }}
+        <ul>
+        {% for friend in friends %}
+            <li><a href="{% url other_profile friend.to_user.id %}">{{ friend.to_user.get_profile.first_name }}</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="delFriend({{ friend.to_user.id }}); return false;">Удалить</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div id="confirm_friends">
+        {% if claims %}
+            {% ifequal user.id user_cur.id %}
+                Confirm:
+                <ul>
+                    {% for claim in claims %}
+                        <!--<li><a href="{% url other_profile claim.from_user_id %}">{{ claim.from_user }}</a> | <a href="{% url addToFriends %}{{ claim.from_user_id }}" style="font-size: 14px;">Add to friends</a></li>-->
+                        <li><a href="{% url other_profile claim.from_user_id %}">{{ claim.from_user }}</a> | <a href="javascript:void(0)" id="addFriend" onclick="addToFriends({{ claim.from_user_id }})" style="font-size: 14px;">Add to friends</a></li>
+                    {% endfor %}
+                </ul>
+            {% endifequal %}
+        {% endif %}
+    </div>
+
+    <!-- Добавление в друзья -->
+    <script type="text/javascript">
+        function addToFriends(friendId) {
+            $.get("/addfriend/", {
+                        id: friendId
+                    },
+
+                    function() {
+                        alert('add');
+                        $('#addFriend').removeAttr('onclick');
+                        $('#addFriend').text('Is friend');
+                        $('#addFriend').css('text-decoration', 'none');
+                    }
+            );
+        }
+
+        function delFriend( friendId ) {
+            $.get("{% url delFriend  %}", {
+                        id: friendId
+                    },
+
+                    function() {
+                        alert('delete')
+                    }
+
+            );
+        }
+    </script>
+
+{% endblock %}

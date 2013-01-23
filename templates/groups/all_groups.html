@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block right_column %}
+    <ul>
+    {% for group in all_groups %}
+        <li><a href="{% url group group.id %}">{{ group.name }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <div class="create_group">
+        <a href="{% url createGroup %}">Создать группу</a>
+    </div>
+{% endblock %}

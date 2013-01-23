@@ -1,0 +1,26 @@
+{% if count %}
+    <p>Вы участник группы</p>
+    <a href="#" onclick="deleteGroup({{ group_id }})">Удалить группу</a>
+{% else %}
+    <a href="#" onclick="joinGroup({{ group_id }}); return false">Вступить в группу</a>
+{% endif %}
+
+<script type="text/javascript">
+
+    function joinGroup(groupId) {
+        $.get("{% url group group_id %}", {
+                id: groupId,
+                act: 'join'
+            },
+            function() {
+                alert('add');
+            }
+        );
+    }
+
+{#    function deleteGroup(groupId) {#}
+{#        $.get("{% url  %}"#}
+{#        );#}
+{#    }#}
+
+</script>

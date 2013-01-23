@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block right_column %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/message.css">
+
+    {% for message in allMessages %}
+        <div class="text-info" style="">
+            From: <a href="{% url other_profile message.from_user.id %}">{{ message.from_user }}</a>
+            <br/>
+            Time: {{ message.created_at }}
+            <br/>
+            <div style="border-radius: 5px; border: 1px solid gray; padding: 10px">
+                {{ message.text }}
+            </div>
+            <ul class="links">
+                <li><a href="{% url message message.id %}">Read</a></li>
+                <li><a href="">Delete</a></li>
+            </ul>
+        </div>
+        <br/><hr/>
+    {% endfor %}
+{% endblock %}

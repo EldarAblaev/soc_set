@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block right_column %}
+
+    <link href="{{ STATIC_URL }}css/groups.css" rel="stylesheet">
+
+    <h3>{{ group.name }}</h3>
+    <p>{{ group.description }}</p>
+
+    <a href="{% url groupUsers group.id %}">Все участники группы</a>
+    <div id="users_block">
+        {% for user in rnd_users %}
+            <div class="user">
+                <a href="{% url other_profile user.id %}">
+                    <img src="{{ MEDIA_URL }}{{ user.get_profile.avatar }}" width="100px">
+                </a>
+                <a href="{% url other_profile user.id %}">{{ user.get_profile.first_name }}</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% load group_tags %}
+    {% is_my_group group.id user.id %}
+
+{#    <a href="#" onclick="joinGroup({{ group.id }}); return false">Вступить</a>#}
+
+    <script type="text/javascript">
+
+        function joinGroup(groupId) {
+
+            $.get("{% url group group.id %}", {
+                    id: groupId,
+                    action: "join"
+                },
+                function() {
+                    alert('add');
+                }
+            );
+        }
+
+        function deleteGroup( groupId ) {
+            $.get("{% url group group.id %}", {
+                        id: groupId,
+                        action: "delete"
+                    },
+                    function() {
+                        alert('delete');
+                    }
+            );
+        }
+
+    </script>
+
+{% endblock %}

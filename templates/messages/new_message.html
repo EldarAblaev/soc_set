@@ -1,0 +1,15 @@
+<link href="{{ STATIC_URL }}css/overlay.css" rel="stylesheet">
+
+<div class="overlay_inner">
+    <img src="{{ MEDIA_URL }}{{ user_cur.get_profile.avatar }}" width="150px">
+    <div class="close_button_wrap">
+        <a href="#" class="close_button jqmClose"></a>
+    </div>
+
+<form action="{% url newMessage user_cur.id %}" method="post">{% csrf_token %}
+    <input type="text" name="message_text">
+    <br>
+    <input type="submit" value="Send">
+</form>
+
+</div>
